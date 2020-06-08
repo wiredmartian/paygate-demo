@@ -14,4 +14,12 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.productList = this.productSvc.getProducts();
   }
+  init(p: Product) {
+    this.productSvc.initiatePayment(p)
+      .subscribe((res) => {
+        console.log(res);
+      }, error => {
+        console.log(error);
+      });
+  }
 }

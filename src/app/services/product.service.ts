@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import {Product} from '../models/product.model';
+import {environment} from '../../environments/environment.prod';
+import * as crypto from 'crypto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getProducts(): Product[] {
     return [
@@ -59,5 +62,28 @@ export class ProductService {
         imageUrl: 'https://media.takealot.com/covers_tsins/59233494/889842308129-zoom.jpg'
       },
     ];
+  }
+
+  initiatePayment(product: Product) {
+    const payment = {
+      PAYGATE_ID: environment.PAYGATEID,
+      REFERENCE: product.name,
+      AMOUNT: (product.price * 100).toString(),
+      CURRENCY: 'ZAR',
+      RETURN_URL: 'http://localhost:4200',
+      LOCALE: 'en-za',
+      COUNTRY: 'ZAF',
+      TRANSACTION_DATE: Date.now(),
+      EMAIL: 'solomzi.jikani@gmail.com'
+    };
+    const checksum = crypto.createHash('md5').update(payment).digest('hex');
+    (payment as any).CHECKSUM = checksum;
+    const request = encodeURIComponent(JSON.stringify(payment));
+    return this.http.post('https://secure.paygate.co.za/payweb3/initiate.trans', request,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
   }
 }
