@@ -1,1 +1,17 @@
-<p>products works!</p>
+<div class="row mt-5">
+  <h2 class="pl-3">Products</h2>
+</div>
+<div class="row mt-3">
+  <div class="col-md-3 mb-4" *ngFor="let p of productList">
+    <div class="card">
+      <img [src]="p.imageUrl" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="pb-2">{{p.name}}</h5>
+        <span class="item-badge badge badge-light">
+          R{{p.price}}
+        </span>
+        <span class="item-badge badge badge-primary float-right">Buy</span>
+      </div>
+    </div>
+  </div>
+</div>
