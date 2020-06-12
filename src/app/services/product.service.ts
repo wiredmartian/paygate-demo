@@ -82,20 +82,23 @@ export class ProductService {
     const payment = {
       'PAYGATE_ID': environment.PAYGATEID,
       'REFERENCE': '209230',
-      'AMOUNT': (product.price * 10).toString(),
+      'AMOUNT': (product.price * 100).toString(),
       'CURRENCY': 'ZAR',
       'RETURN_URL': 'http://localhost:4200',
       'TRANSACTION_DATE': '2020-06-12 09:30:10',
       'LOCALE': 'en-za',
       'COUNTRY': 'ZAF',
-      'EMAIL': 'solomzi.jikani@gmail.com'
+      'EMAIL': 'solomzi.jikani@gmail.com',
+      'NOTIFY_URL': '',
     };
     // @ts-ignore
     const checksumFormat = `${payment.PAYGATE_ID}${payment.REFERENCE}${payment.AMOUNT}${payment.CURRENCY}${payment.RETURN_URL}`+
-      `${payment.TRANSACTION_DATE}${payment.LOCALE}${payment.COUNTRY}${payment.EMAIL}${environment.PAYGATEKEY}`;
+      `${payment.TRANSACTION_DATE}${payment.LOCALE}${payment.COUNTRY}${payment.EMAIL}${payment.NOTIFY_URL}${environment.PAYGATEKEY}`;
     (payment as any).CHECKSUM = CryptoJS.MD5(checksumFormat, environment.PAYGATEKEY).toString();
     // @ts-ignore
     let body = new HttpParams({fromObject: payment });
-    return this.http.post('https://secure.paygate.co.za/payweb3/initiate.trans', body);
+    return this.http.post('https://secure.paygate.co.za/payweb3/initiate.trans', body, {
+      responseType: "text"
+    });
   }
 }
