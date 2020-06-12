@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Product} from '../models/product.model';
 import {environment} from '../../environments/environment.prod';
-import * as crypto from 'crypto';
+import * as CryptoJS from "crypto-js";
 
 @Injectable({
   providedIn: 'root'
@@ -65,25 +65,37 @@ export class ProductService {
   }
 
   initiatePayment(product: Product) {
+    /**
+     * let body = new URLSearchParams();
+     body.set('PAYGATE_ID', environment.PAYGATEID.toString())
+     body.set('REFERENCE', product.name)
+     body.set('AMOUNT', (product.price * 100).toString());
+     body.set('CURRENCY', 'ZAR');
+     body.set('RETURN_URL', 'http://localhost:4200');
+     body.set('LOCALE', 'en-za');
+     body.set('COUNTRY', 'ZAF');
+     body.set('TRANSACTION_DATE', Date.now().toLocaleString());
+     body.set('EMAIL', 'solomzi.jikani@gmail.com');
+     const checksum = CryptoJS.MD5(body.toString(), environment.PAYGATEKEY).toString();
+     body.set('CHECKSUM', checksum);
+     * */
     const payment = {
-      PAYGATE_ID: environment.PAYGATEID,
-      REFERENCE: product.name,
-      AMOUNT: (product.price * 100).toString(),
-      CURRENCY: 'ZAR',
-      RETURN_URL: 'http://localhost:4200',
-      LOCALE: 'en-za',
-      COUNTRY: 'ZAF',
-      TRANSACTION_DATE: Date.now(),
-      EMAIL: 'solomzi.jikani@gmail.com'
+      'PAYGATE_ID': environment.PAYGATEID,
+      'REFERENCE': '209230',
+      'AMOUNT': (product.price * 10).toString(),
+      'CURRENCY': 'ZAR',
+      'RETURN_URL': 'http://localhost:4200',
+      'TRANSACTION_DATE': '2020-06-12 09:30:10',
+      'LOCALE': 'en-za',
+      'COUNTRY': 'ZAF',
+      'EMAIL': 'solomzi.jikani@gmail.com'
     };
-    const checksum = crypto.createHash('md5').update(payment).digest('hex');
-    (payment as any).CHECKSUM = checksum;
-    const request = encodeURIComponent(JSON.stringify(payment));
-    return this.http.post('https://secure.paygate.co.za/payweb3/initiate.trans', request,
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+    // @ts-ignore
+    const checksumFormat = `${payment.PAYGATE_ID}${payment.REFERENCE}${payment.AMOUNT}${payment.CURRENCY}${payment.RETURN_URL}`+
+      `${payment.TRANSACTION_DATE}${payment.LOCALE}${payment.COUNTRY}${payment.EMAIL}${environment.PAYGATEKEY}`;
+    (payment as any).CHECKSUM = CryptoJS.MD5(checksumFormat, environment.PAYGATEKEY).toString();
+    // @ts-ignore
+    let body = new HttpParams({fromObject: payment });
+    return this.http.post('https://secure.paygate.co.za/payweb3/initiate.trans', body);
   }
 }
