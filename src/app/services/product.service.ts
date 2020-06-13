@@ -84,16 +84,15 @@ export class ProductService {
       'REFERENCE': '209230',
       'AMOUNT': (product.price * 100).toString(),
       'CURRENCY': 'ZAR',
-      'RETURN_URL': 'http://localhost:4200',
+      'RETURN_URL': 'http://localhost:4000/payment-result',
       'TRANSACTION_DATE': '2020-06-12 09:30:10',
       'LOCALE': 'en-za',
       'COUNTRY': 'ZAF',
       'EMAIL': 'solomzi.jikani@gmail.com',
-      'NOTIFY_URL': '',
     };
     // @ts-ignore
     const checksumFormat = `${payment.PAYGATE_ID}${payment.REFERENCE}${payment.AMOUNT}${payment.CURRENCY}${payment.RETURN_URL}`+
-      `${payment.TRANSACTION_DATE}${payment.LOCALE}${payment.COUNTRY}${payment.EMAIL}${payment.NOTIFY_URL}${environment.PAYGATEKEY}`;
+      `${payment.TRANSACTION_DATE}${payment.LOCALE}${payment.COUNTRY}${payment.EMAIL}${environment.PAYGATEKEY}`;
     (payment as any).CHECKSUM = CryptoJS.MD5(checksumFormat, environment.PAYGATEKEY).toString();
     // @ts-ignore
     let body = new HttpParams({fromObject: payment });
