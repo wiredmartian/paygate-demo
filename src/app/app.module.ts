@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { ProductsComponent } from './products/products.component';
 import {ProductService} from './services/product.service';
 import {HttpClientModule} from '@angular/common/http';
+import { PaymentCompleteComponent } from './payment-complete/payment-complete.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductsComponent
+    ProductsComponent,
+    PaymentCompleteComponent
   ],
   imports: [
     BrowserModule,

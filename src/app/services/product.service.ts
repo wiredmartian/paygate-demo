@@ -66,18 +66,7 @@ export class ProductService {
 
   initiatePayment(product: Product) {
     /**
-     * let body = new URLSearchParams();
-     body.set('PAYGATE_ID', environment.PAYGATEID.toString())
-     body.set('REFERENCE', product.name)
-     body.set('AMOUNT', (product.price * 100).toString());
-     body.set('CURRENCY', 'ZAR');
-     body.set('RETURN_URL', 'http://localhost:4200');
-     body.set('LOCALE', 'en-za');
-     body.set('COUNTRY', 'ZAF');
-     body.set('TRANSACTION_DATE', Date.now().toLocaleString());
-     body.set('EMAIL', 'solomzi.jikani@gmail.com');
-     const checksum = CryptoJS.MD5(body.toString(), environment.PAYGATEKEY).toString();
-     body.set('CHECKSUM', checksum);
+     * PAYGATE will only consider the NOTIFY_URL if its a remote and valid POST URL
      * */
     const payment = {
       'PAYGATE_ID': environment.PAYGATEID,
@@ -89,10 +78,11 @@ export class ProductService {
       'LOCALE': 'en-za',
       'COUNTRY': 'ZAF',
       'EMAIL': 'solomzi.jikani@gmail.com',
+      'NOTIFY_URL': 'http://localhost:4000/payment-details',
     };
     // @ts-ignore
     const checksumFormat = `${payment.PAYGATE_ID}${payment.REFERENCE}${payment.AMOUNT}${payment.CURRENCY}${payment.RETURN_URL}`+
-      `${payment.TRANSACTION_DATE}${payment.LOCALE}${payment.COUNTRY}${payment.EMAIL}${environment.PAYGATEKEY}`;
+      `${payment.TRANSACTION_DATE}${payment.LOCALE}${payment.COUNTRY}${payment.EMAIL}${payment.NOTIFY_URL}${environment.PAYGATEKEY}`;
     (payment as any).CHECKSUM = CryptoJS.MD5(checksumFormat, environment.PAYGATEKEY).toString();
     // @ts-ignore
     let body = new HttpParams({fromObject: payment });

@@ -32,6 +32,11 @@ app.post('/payment-result', (req, res) => {
   return res.redirect("http://localhost:4200?PAY_REQUEST_ID=" + PAY_REQUEST_ID + "&TRANSACTION_STATUS=" + TRANSACTION_STATUS + "&CHECKSUM=" + CHECKSUM);
 });
 
+app.post('/payment-details', (req, res) => {
+  console.log(req.body);
+  return res.send('OK');
+})
+
 app.listen(4000, () => {
   console.info('server running at port 4000');
 });
