@@ -14,14 +14,14 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.productList = this.productSvc.getProducts();
   }
-  init(p: Product) {
+  init(p: Product, e: any) {
+    console.log(e)
+    e.target.innerHTML = "Buy...";
     this.productSvc.initiatePayment(p)
       .subscribe((res) => {
         const data = res.toString().split('&');
         /**
-         * [ "PAYGATE_ID=10011072130",
-         * "PAY_REQUEST_ID=4ED21801-2B70-0F8B-0201-B7477A129461",
-         * "REFERENCE=209230",
+         * [ "PAYGATE_ID=10011072130", "PAY_REQUEST_ID=4ED21801-2B70-0F8B-0201-B7477A129461", * "REFERENCE=209230",
          * "CHECKSUM=46290b892c7a8daea80deb1088604f08" ]
          * */
         const PAY_REQUEST_ID = data[1].substr(data[1].indexOf('=') + 1);

@@ -29,7 +29,7 @@ app.post('/payment-result', (req, res) => {
     TRANSACTION_STATUS,
     CHECKSUM
   } = req.body;
-  return res.redirect("http://localhost:4200?PAY_REQUEST_ID=" + PAY_REQUEST_ID + "&TRANSACTION_STATUS=" + TRANSACTION_STATUS + "&CHECKSUM=" + CHECKSUM);
+  return res.redirect("http://localhost:4200/payment/complete?PAY_REQUEST_ID=" + PAY_REQUEST_ID + "&TRANSACTION_STATUS=" + TRANSACTION_STATUS + "&CHECKSUM=" + CHECKSUM);
 });
 
 app.post('/payment-details', (req, res) => {

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Product} from '../models/product.model';
 import {environment} from '../../environments/environment.prod';
+import * as moment from "moment";
 import * as CryptoJS from "crypto-js";
 
 @Injectable({
@@ -54,9 +55,9 @@ export class ProductService {
         imageUrl: 'https://media.takealot.com/covers_tsins/59233494/889842308129-zoom.jpg'
       },
       {
-        productCode: '00006',
+        productCode: '10237 - Tesla Model 3',
         name: 'XBox 360 D600',
-        price: 6000,
+        price: 675000,
         description: 'Actual XBox',
         dateAdded: Date.now(),
         imageUrl: 'https://media.takealot.com/covers_tsins/59233494/889842308129-zoom.jpg'
@@ -67,14 +68,15 @@ export class ProductService {
   initiatePayment(product: Product) {
     /**
      * PAYGATE will only consider the NOTIFY_URL if its a remote and valid POST URL
+     * TRANSACTION_DATE format '2020-06-12 09:30:10'
      * */
     const payment = {
       'PAYGATE_ID': environment.PAYGATEID,
-      'REFERENCE': '209230',
+      'REFERENCE': `#${product.productCode}`,
       'AMOUNT': (product.price * 100).toString(),
       'CURRENCY': 'ZAR',
       'RETURN_URL': 'http://localhost:4000/payment-result',
-      'TRANSACTION_DATE': '2020-06-12 09:30:10',
+      'TRANSACTION_DATE': moment().format('YYYY MM DD hh:mm:ss'),
       'LOCALE': 'en-za',
       'COUNTRY': 'ZAF',
       'EMAIL': 'solomzi.jikani@gmail.com',

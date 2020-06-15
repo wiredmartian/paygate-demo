@@ -5,6 +5,7 @@ import {PaymentCompleteComponent} from "./payment-complete/payment-complete.comp
 
 
 const routes: Routes = [
+  { path: '', component: ProductsComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'payment/complete', component: PaymentCompleteComponent }
 ];

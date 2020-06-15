@@ -1,2 +1,23 @@
-<p>Welcome Back</p>
-<router-outlet></router-outlet>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/products">Paygate</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" routerLink="/products">Home <span class="sr-only">(current)</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+<div class="fixed-bottom">
+  <footer class="py-4 bg-dark text-white-50">
+    <div class="container text-center">
+      <small>Powered by &copy; The Wired Martian</small>
+    </div>
+  </footer>
+</div>
