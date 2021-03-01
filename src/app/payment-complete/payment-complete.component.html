@@ -1,0 +1,14 @@
+<div class="row mt-5">
+  <div class="col-md-6 offset-md-3 col-sm-12 mt-5 text-center">
+    <p>Your payment status:</p>
+    <h2 class="alert alert-warning" *ngIf="TRANSACTION_STATUS == 0">
+      {{ PaymentStatus }}
+    </h2>
+    <h2 class="alert alert-success" *ngIf="TRANSACTION_STATUS == 1">
+      {{ PaymentStatus }}
+    </h2>
+    <h2 class="alert alert-danger" *ngIf="TRANSACTION_STATUS == 2">
+      {{ PaymentStatus }}
+    </h2>
+  </div>
+</div>
